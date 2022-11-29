@@ -27,9 +27,9 @@ game_over_sfx = pygame.mixer.Sound(".wav")                  #set variable for so
 level_passed_sfx = pygame.mixer.Sound(".wav")               #set variable for sound effect when you pass the level
 congrats_sfx = pygame.mixer.Sound(".wav")                   #set variable for sound effect when you beat the game
 
-white = [225,225,225]                                       #set variable for colour white
-black = [0,0,0]                                             #set variable for colour black
-colour = [225,225,225]                                      #set variable for colour 
+white = [225, 225, 225]                                     #set variable for colour white
+black = [0, 0, 0]                                           #set variable for colour black
+colour = [225, 225, 225]                                    #set variable for colour 
 
 font = pygame.font.Font(None, 40)                           #set font size and type
 
