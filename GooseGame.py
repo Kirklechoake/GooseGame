@@ -22,7 +22,11 @@ pygame.mixer.init()                                         #initialize mixer, u
 pygame.mixer.music.load(".wav")                             #import the background music
 pygame.mixer.music.play(-1)                                 #plays the backround music on loop
 
-scared_sfx = pygame.mixer.Sound(".wav")                     #set variable for sound effect when humans get scared
+scared_sfx1 = pygame.mixer.Sound(".wav")                    #set variable 1 for sound effect when humans get scared
+scared_sfx2 = pygame.mixer.Sound(".wav")                    #set variable 2 for sound effect when humans get scared
+scared_sfx3 = pygame.mixer.Sound(".wav")                    #set variable 3 for sound effect when humans get scared
+s_sfx_list = [scared_sfx1, scared_sfx2, scared_sfx3]        #set list of variables for sound effects when human get scared
+
 game_over_sfx = pygame.mixer.Sound(".wav")                  #set variable for sound effect when you lose the game
 level_passed_sfx = pygame.mixer.Sound(".wav")               #set variable for sound effect when you pass the level
 congrats_sfx = pygame.mixer.Sound(".wav")                   #set variable for sound effect when you beat the game
@@ -109,6 +113,16 @@ class Human(pygame.sprite.Sprite):                                              
         self.scared = False                                                                                                         #set variable for scared condition to false
         self.GS = GS                                                                                                                #set variable for class goose
 
+        '''
+        Explanation for path generation:
+        1. Determine random starting position of human, either: top, bottom, left, or right side of screen
+        2. Determine the random speed of human, which bassically determine direction
+        3. Code designed in a way so that they will always travel across the screen
+        4. Code designed in a way so that they will travel further forward, and less to the sides
+            - This is there to make it more likely for the path of the human to intercept the nest
+            - 2nd reason is that it prevents humans from traveling very short paths on the corners
+        '''
+
         if self.start_axis == 1:                                                                                                    #check if human starts on x-axis
             self.rect.x = random.randrange(-50, 1500)                                                                                   #pick a random value on the x-axis to start on
             self.rect.y = random.choice([-50, 1000])                                                                                    #choose whether to start on top or bottom of screen
@@ -143,7 +157,7 @@ class Human(pygame.sprite.Sprite):                                              
 
             self.scared = True                                                                                                          #make itself scared (so goose cant scare it again)
 
-            pygame.mixer.Sound.play(scared_sfx)                                                                                         #play sound effect to indicate human is scared
+            pygame.mixer.Sound.play(random.choice(s_sfx_list))                                                                          #play random sound effect from list to indicate human is scared
         
         if self.scared:                                                                                                             #check if human is scared
             if self.rect.left <= -50 or self.rect.right > 1550 or self.rect.top <= -50 or self.rect.bottom > 1050:                      #check if human crosses border of screen (playing area)
@@ -157,3 +171,48 @@ class Human(pygame.sprite.Sprite):                                              
             Game_over_list.add(self)                                                                                                    #add human to game_over_list, to indicate the condition has been met for the game to end
 
             pygame.mixer.Sound.play(game_over_sfx)                                                                                      #play sound effect to indicate player has lost
+
+
+
+##INFORMATION SCREENS
+def main_menu(current_level):                                       #function for the main menu screen based off current level
+    pygame.display.set_caption("Menu")                                  #set text on window of screen as Menu
+
+    while True:                                                         #continue running screen until a button is pressed
+        screen.fill(white)                                                  #fill the screen with white
+        mouse_pos = pygame.mouse.get_pos()                                  #get the position of the mouse
+
+        title = font.render("Goose Game", True, black)                      #create text for the title
+        title_rect = title.get_rect(center=(750, 100))                      #determine position of the title, center it on (750, 100)
+        screen.blit(title, title_rect)                                      #add the title to the screen
+
+        play_b = Button([750, 400], "Play")                                 #create button to play the game
+        instructions_b = Button([750,550], "Instructions")                  #create button to read the instructions
+        quit_b = Button([750, 700], "Quit")                                 #create button the exit the game
+
+        for b in [play_b, instructions_b, quit_b]:                          #run code for every button created
+            b.update(mouse_pos)                                                 #update the button to check if mouse is hovering over it
+        
+        for event in pygame.event.get():                                    #run code for every new event in the game
+            if event.type == pygame.QUIT:                                       #check if person presses the X on the window bar
+                pygame.quit()                                                       #quite the game
+                sys.exit()                                                          #exit the system
+
+            if event.type == pygame.MOUSEBUTTONDOWN:                            #check if person clicked with their mouse
+                if play_b.check_input(mouse_pos):                                   #check if person clicked the play button
+                    level_info(current_level)                                           #go to the level info screen
+
+                if instructions_b.check_input(mouse_pos):                           #check if person clicked the instructions button
+                    instructions(current_level)                                         #go to the instructions screen
+                    
+                if quit_b.check_input(mouse_pos):                                   #check if person clicked the quit button
+                    pygame.quit()                                                       #quite the game
+                    sys.exit()                                                          #exit the system
+        
+        clock.tick(60)                                                      #update the screen 60 times per second (fps)
+        pygame.display.update()                                             #update the display
+
+
+
+##RUN THE CODE TO PLAY
+main_menu(1)
