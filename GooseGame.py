@@ -33,7 +33,7 @@ congrats_sfx = pygame.mixer.Sound(".wav")                   #set variable for so
 
 white = [225, 225, 225]                                     #set variable for colour white
 black = [0, 0, 0]                                           #set variable for colour black
-colour = [225, 225, 225]                                    #set variable for colour 
+colour = [100, 225, 225]                                    #set variable for colour 
 
 font = pygame.font.Font(None, 40)                           #set font size and type
 
@@ -194,23 +194,93 @@ def main_menu(current_level):                                       #function fo
             b.update(mouse_pos)                                                 #update the button to check if mouse is hovering over it
         
         for event in pygame.event.get():                                    #run code for every new event in the game
-            if event.type == pygame.QUIT:                                       #check if person presses the X on the window bar
+            if event.type == pygame.QUIT:                                       #check if player presses the X on the window bar
                 pygame.quit()                                                       #quite the game
                 sys.exit()                                                          #exit the system
 
-            if event.type == pygame.MOUSEBUTTONDOWN:                            #check if person clicked with their mouse
-                if play_b.check_input(mouse_pos):                                   #check if person clicked the play button
+            if event.type == pygame.MOUSEBUTTONDOWN:                            #check if player clicked with their mouse
+                if play_b.check_input(mouse_pos):                                   #check if player clicked the play button
                     level_info(current_level)                                           #go to the level info screen
 
-                if instructions_b.check_input(mouse_pos):                           #check if person clicked the instructions button
+                if instructions_b.check_input(mouse_pos):                           #check if player clicked the instructions button
                     instructions(current_level)                                         #go to the instructions screen
                     
-                if quit_b.check_input(mouse_pos):                                   #check if person clicked the quit button
+                if quit_b.check_input(mouse_pos):                                   #check if player clicked the quit button
                     pygame.quit()                                                       #quite the game
                     sys.exit()                                                          #exit the system
         
         clock.tick(60)                                                      #update the screen 60 times per second (fps)
         pygame.display.update()                                             #update the display
+
+
+
+##GAMEPLAY SCREENS
+def play(current_level):                                                                    #function to run the game screen based off current level
+    Sprites_list.empty()                                                                        #empty the sprites list as its a new level
+    Game_over_list.empty()                                                                      #empty the game over list as its a new level
+
+    NS = Nest()                                                                                 #create variable of the nest class
+    Sprites_list.add(NS)                                                                        #add nest variable to sprites list
+
+    GS = Goose()                                                                                #create variable of the goose class
+    Sprites_list.add(GS)                                                                        #add goose variable to sprites list
+
+    time = [70, 60, 50, 40, 30]                                                                 #set list of the timer values, position corresponding to level
+
+    level_pass = False                                                                          #set condition for level passed as False
+    lose = False                                                                                #set condition for game lost as False
+
+    tick = 0                                                                                    #set tick as 0 for the timer
+
+    image = pygame.image.load("Park.png")                                                       #import a backround image
+    bg = pygame.transform.scale(image, [1500, 1000])                                            #scale backround image to 1500x1000
+
+    while not level_pass and not lose:                                                          #continue loop while level has not been passed and game is not over
+        screen.blit(bg, (0, 0))                                                                     #add backround to the screen
+
+        tick += 1                                                                                   #increase tick by 1
+        if tick % 60 == 0:                                                                          #check if tick == 60 (1 second has passed)
+            time[current_level - 1] -= 1                                                                #decrease the current timer by 1 second
+
+        if tick % 90 == 0:                                                                          #check if tick == 90 (1.5 second has passed)
+            HM = Human(GS)                                                                              #create varaible for human class
+            Sprites_list.add(HM)                                                                        #add human variable to sprites list
+
+        timer = font.render("Timer = " + str(time[current_level - 1]), True, black)                 #render the timer, with text colour black
+        screen.blit(timer, [10, 10])                                                                #add the timer on to the screen at position (10, 10)
+
+        score = font.render("Humans left = " + str(10 - GS.score), True, black)                     #render the score, with text colour black
+        screen.blit(score, [10, 50])                                                                #add the score on to the screen at position (10, 50)
+
+        Sprites_list.update()                                                                       #update all the sprites in sprites list
+        Sprites_list.draw(screen)                                                                   #draw all the sprites in sprites list to the screen
+
+        for event in pygame.event.get():                                                            #run code for every new event in the game
+            if event.type == pygame.QUIT:                                                               #check if player presses the X on the window bar
+                pygame.quit()                                                                               #quite the game
+                sys.exit()                                                                                  #exit the system
+
+            if time[current_level - 1] <= 0 or len(Game_over_list.sprites()) > 0:                       #check if timer has reached 0, or human has gotten near the nest
+                humans_left = 10 - GS.score                                                                 #count how many humans remained to beat the level
+                GS.score = 0                                                                                #reset score to 0
+                lose = True                                                                                 #set lose condition to True
+
+            elif GS.score == 10:                                                                        #check if level has been beaten
+                GS.score = 0                                                                                #reset score to 0 
+                level_pass = True                                                                           #set win condition to True
+
+            if event.type == pygame.KEYDOWN:                                                            #check if player pressed a key on the keyboard
+                if event.key == pygame.K_ESCAPE:                                                            #check if key pressed was escape key
+                    pause(current_level)                                                                        #go to the pause screen
+
+        clock.tick(60)                                                                              #update the screen 60 times per second (fps)
+        pygame.display.update()                                                                     #update the display
+    
+    if lose:                                                                                    #check if player lost the game
+        you_lose(current_level, humans_left, time[current_level - 1])                               #go to the game over screen, along with level stats
+        
+    if level_pass:                                                                              #check if player passed the level
+        level_passed(current_level + 1)                                                             #go to the level passed screen, and increase current level by 1
 
 
 
