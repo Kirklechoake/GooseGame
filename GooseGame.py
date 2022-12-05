@@ -611,4 +611,4 @@ def congrats():                                                                 
 
 
 ##RUN THE CODE TO PLAY
-main_menu(1)
+main_menu(1, True)              #run main menu function, with current level set to 1 and music set to restart
