@@ -1,5 +1,5 @@
 '''
-THE GOOSE TRAINING CAMP
+The Goose Training Camp
 
 By:
 Karan Sharma 21023433
@@ -20,16 +20,14 @@ pygame.init()                                                       #initialize 
 pygame.mixer.pre_init(44100, -16, 2, 2048)                          #pre-initialize mixer, used to work with sound/music
 pygame.mixer.init()                                                 #initialize mixer, used to work with sound/music
 
-scared_sfx1 = pygame.mixer.Sound(".wav")                            #set variable 1 for sound effect when humans get scared
-scared_sfx2 = pygame.mixer.Sound(".wav")                            #set variable 2 for sound effect when humans get scared
-scared_sfx3 = pygame.mixer.Sound(".wav")                            #set variable 3 for sound effect when humans get scared
+scared_sfx1 = pygame.mixer.Sound("Scream1.wav")                     #set variable 1 for sound effect when humans get scared
+scared_sfx2 = pygame.mixer.Sound("Scream2.wav")                     #set variable 2 for sound effect when humans get scared
+scared_sfx3 = pygame.mixer.Sound("Scream3.wav")                     #set variable 3 for sound effect when humans get scared
 s_sfx_list = [scared_sfx1, scared_sfx2, scared_sfx3]                #set list of variables for sound effects when human get scared
 
-game_over_sfx = pygame.mixer.Sound(".wav")                          #set variable for sound effect when you lose the game
-level_passed_sfx = pygame.mixer.Sound(".wav")                       #set variable for sound effect when you pass the level
-pause_sfx = pygame.mixer.Sound(".wav")                              #set variable for sound effect when you pause the level
-button_hover_sfx = pygame.mixer.Sound(".wav")                       #set variable for sound effect when you hover over a button
-button_click_sfx = pygame.mixer.Sound(".wav")                       #set variable for sound effect when you click a button
+pause_sfx = pygame.mixer.Sound("Quack.wav")                         #set variable for sound effect when you pause the level
+button_hover_sfx = pygame.mixer.Sound("Swoosh.wav")                 #set variable for sound effect when you hover over a button
+button_click_sfx = pygame.mixer.Sound("Click.wav")                  #set variable for sound effect when you click a button
 
 white = [225, 225, 225]                                             #set variable for colour white
 black = [0, 0, 0]                                                   #set variable for colour black
@@ -211,7 +209,7 @@ def main_menu(current_level, music):                                            
     bg = pygame.transform.scale(image, [1500, 1000])                                    #scale backround image to 1500x1000
 
     if music:                                                                           #if music is set to restart (= True)
-        pygame.mixer.music.load(".wav")                                                     #load in the music
+        pygame.mixer.music.load("Menu.wav")                                                 #load in the music
         pygame.mixer.music.play(-1)                                                         #play the music on loop
 
     while True:                                                                         #continue running screen until a button is pressed
@@ -236,7 +234,7 @@ def main_menu(current_level, music):                                            
 
             if event.type == pygame.MOUSEBUTTONDOWN:                                            #check if player clicked with their mouse
                 if play_b.check_input(mouse_pos):                                                   #check if player clicked the play button
-                    if current_level == 5:                                                              #check if player is beaten all levels
+                    if current_level == 6:                                                              #check if player is beaten all levels
                         congrats()                                                                          #go to the congrats screen
 
                     level_info(current_level, False)                                                    #go to the level info screen, dont restart the music
@@ -311,7 +309,7 @@ def level_info(current_level, music):                                           
     bg = pygame.transform.scale(image, [1500, 1000])                                                                    #scale backround image to 1500x1000
 
     if music:                                                                                                           #check if music is set to restart (= True)
-        pygame.mixer.music.load(".wav")                                                                                     #load in the music
+        pygame.mixer.music.load("Menu.wav")                                                                                 #load in the music
         pygame.mixer.music.play(-1)                                                                                         #play the music on loop
 
     while True:                                                                                                         #run code until a button is pressed
@@ -371,7 +369,7 @@ def play(current_level, music):                                                 
     bg = pygame.transform.scale(image, [1500, 1000])                                                    #scale backround image to 1500x1000
 
     if music:                                                                                           #check if music is set to restart (= True)
-        pygame.mixer.music.load(".wav")                                                                     #load in the music
+        pygame.mixer.music.load("Gameplay.wav")                                                             #load in the music
         pygame.mixer.music.play(-1)                                                                         #play the music on loop
 
     while not level_pass and not lose:                                                                  #continue loop while level has not been passed and game is not over
@@ -421,13 +419,9 @@ def play(current_level, music):                                                 
         pygame.display.update()                                                                             #update the display
     
     if lose:                                                                                            #check if player lost the game
-        pygame.mixer.music.unload()                                                                         #unload the current music
-
         you_lose(current_level, humans_left, time[current_level - 1])                                       #go to the game over screen, along with level stats
 
     if level_pass:                                                                                      #check if player passed the level
-        pygame.mixer.music.unload()                                                                         #unload the current music
-
         level_passed(current_level + 1)                                                                     #go to the level passed screen, and increase current level by 1
 
 
@@ -482,7 +476,8 @@ def level_passed(current_level):                                                
     image = pygame.image.load("Background.jpg")                                         #import a backround image
     bg = pygame.transform.scale(image, [1500, 1000])                                    #scale backround image to 1500x1000
 
-    pygame.mixer.Sound.play(level_passed_sfx)                                           #play sound effect to indicate player has beaten the level
+    pygame.mixer.music.load("Victory.wav")                                              #load in the music
+    pygame.mixer.music.play(1)                                                         #play the music on loop
 
     while True:                                                                         #continue running code until button is pressed
         screen.blit(bg, (0, 0))                                                             #add backround to the screen
@@ -506,7 +501,7 @@ def level_passed(current_level):                                                
 
             if event.type == pygame.MOUSEBUTTONDOWN:                                            #check if player has clicked with their mouse
                 if next_b.check_input(mouse_pos):                                                   #check if player clicked the next button
-                    if current_level == 5:                                                              #check if player has passed all levels
+                    if current_level == 6:                                                              #check if player has passed all levels
                         congrats()                                                                          #go to the congrats screen
 
                     level_info(current_level, True)                                                     #go to the level info screen
@@ -525,7 +520,8 @@ def you_lose(current_level, humans_left, time_left):                            
     image = pygame.image.load("Background.jpg")                                                 #import a backround image
     bg = pygame.transform.scale(image, [1500, 1000])                                            #scale backround image to 1500x1000
 
-    pygame.mixer.Sound.play(game_over_sfx)                                                      #play sound effect to indicate player has lost
+    pygame.mixer.music.load("Sad.wav")                                                          #load in the music
+    pygame.mixer.music.play(1)                                                                  #play the music on loop
 
     while True:                                                                                 #run code until button has been pressed
         screen.blit(bg, (0, 0))                                                                     #add backround to the screen
@@ -575,7 +571,7 @@ def congrats():                                                                 
     image = pygame.image.load("Background.jpg")                                             #import a backround image
     bg = pygame.transform.scale(image, [1500, 1000])                                        #scale backround image to 1500x1000
 
-    pygame.mixer.music.load(".wav")                                                         #load in the music
+    pygame.mixer.music.load("Axel F.wav")                                                    #load in the music
     pygame.mixer.music.play(-1)                                                             #play the music on loop
 
     while True:                                                                             #continue running code until button is pressed
