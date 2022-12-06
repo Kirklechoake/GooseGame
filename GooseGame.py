@@ -89,25 +89,60 @@ class Button():                                                                 
 class Goose(pygame.sprite.Sprite):                                                                                              #class for the goose (playable character)
     def __init__(self):                                                                                                             #initialize class
         pygame.sprite.Sprite.__init__(self)                                                                                             #initialize itself as a sprite
+  
+        self.stand = pygame.image.load("goose stand.png")        
+        self.run1 = pygame.image.load("goose attack1.png")
+        self.run2 = pygame.image.load("goose attack.png")
+        self.run3 = pygame.image.load("goose attack2.png")
 
-        self.image = pygame.image.load(".png")                                                                                          #import image for the sprite
-        self.image = pygame.transform.scale(self.image, [50, 50])                                                                       #scale image to size 50x50 pixels
+        self.stand = pygame.transform.scale(self.stand, [50, 50])        
+        self.run1 = pygame.transform.scale(self.run1, [50, 50])
+        self.run2 = pygame.transform.scale(self.run2, [50, 50])    
+        self.run3 = pygame.transform.scale( self.run3, [50, 50])  
+         
+        self.standL = pygame.transform.flip(self.stand, True, False)        
+        self.run1L = pygame.transform.flip(self.run1, True, False)
+        self.run2L = pygame.transform.flip(self.run2,  True, False)    
+        self.run3L = pygame.transform.flip( self.run3,  True, False)
 
+        self.spriteListRight = [self.run1, self.run2, self.run3]
+        self.spriteListLeft = [self.run1L, self.run2L, self.run3L]
+        self.bufferTime=3
+        self.counter=0
+
+        self.image = self.stand  
+     
         self.rect = self.image.get_rect()                                                                                               #initialize the position of the sprite
         self.rect.x = 725                                                                                                               #set variable of x position, with value of 725
         self.rect.y = 425                                                                                                               #set variable of x position, with value of 425
 
         self.score = 0                                                                                                                  #set variable of goose's score, with value of 0 at start of game
 
-    def update(self):                                                                                                               #define function for when sprite updates itself in-game
-        keys = pygame.key.get_pressed()                                                                                                 #initialize kets
+    def update(self):                                                                                                          #define function for when sprite updates itself in-game
+        keys = pygame.key.get_pressed()   #initialize kets 
 
-        move = pygame.math.Vector2(keys[pygame.K_RIGHT] - keys[pygame.K_LEFT], keys[pygame.K_DOWN] - keys[pygame.K_UP])                 #set movement for goose as a 2-d vector using the input keys
+        self.bufferTime-=1               
+        if self.bufferTime==0:
+            if keys[pygame.K_RIGHT]==1:
+                self.image = self.spriteListRight[self.counter]
+            elif keys[pygame.K_LEFT]==1:
+                self.image = self.spriteListLeft[self.counter]        
+            self.counter+=1 
+            if self.counter == 3:
+                self.counter=0
+            self.bufferTime=3                                                                                                                                                              
+
+        move = pygame.math.Vector2(keys[pygame.K_RIGHT] - keys[pygame.K_LEFT], keys[pygame.K_DOWN] - keys[pygame.K_UP])                         #set movement for goose as a 2-d vector using the input keys                                                   
         if move.length_squared() > 0:                                                                                                   #check if the goose is moving by finding absolute value squared of movement vector
             move.scale_to_length(5)                                                                                                         #set movement to the speed = 5, by scaling the length (absolute value) to 5
 
             self.rect.x += round(move.x)                                                                                                    #move goose on x-axis by the x component of movement vector
-            self.rect.y += round(move.y)                                                                                                    #move goose on y-axis by the y component of movement vector
+            self.rect.y += round(move.y) 
+        #new code 
+        else:
+            self.image=self.stand
+
+        #end new code                                                                                               #move goose on y-axis by the y component of movement vector
 
         self.rect.clamp_ip(pygame.display.get_surface().get_rect())                                                                     #bound the goose within the size of the screen, so it doesn't travel out of sight
 
@@ -116,8 +151,35 @@ class Human(pygame.sprite.Sprite):                                              
     def __init__(self, GS):                                                                                                     #initialize class
         pygame.sprite.Sprite.__init__(self)                                                                                         #initialize itself as a sprite
 
-        self.image = pygame.image.load(".png")                                                                                      #import image for the sprite
-        self.image = pygame.transform.scale(self.image, [50, 50])                                                                   #scale image to size 50x50 pixels
+        self.walk_1 = pygame.image.load("person walk1.png")        
+        self.walk_2 = pygame.image.load("person walk2.png")
+        self.walk_3 = pygame.image.load("person walk3.png")
+        self.run_1 = pygame.image.load("person run1.png")
+        self.run_2 = pygame.image.load("person run2.png")
+        self.run_3 = pygame.image.load("person run3.png")
+
+        self.walk_1 = pygame.transform.scale(self.walk_1, [100, 100])        
+        self.walk_2 = pygame.transform.scale(self.walk_2, [100, 100])
+        self.walk_3 = pygame.transform.scale(self.walk_3, [100, 100])    
+        self.run_3 = pygame.transform.scale(self.run_3, [100, 100])  
+        self.run_2 = pygame.transform.scale(self.run_2, [100, 100])
+        self.run_1 = pygame.transform.scale(self.run_1, [100, 100])
+
+        self.walk_1_L = pygame.transform.flip(self.walk_1, True, False)        
+        self.walk_2_L = pygame.transform.flip(self.walk_2, True, False)
+        self.walk_3_L = pygame.transform.flip(self.walk_3, True, False)    
+        self.run_3_L = pygame.transform.flip(self.run_3, True, False)
+        self.run_2_L = pygame.transform.flip(self.run_2, True, False)
+        self.run_1_L = pygame.transform.flip(self.run_1, True, False)
+
+        self.spriteListRun_R = [self.run_1, self.run_3, self.run_2]
+        self.spriteListRun_L = [self.run_1_L, self.run_3_L, self.run_2_L]
+        self.spriteListWalk_R = [self.walk_1, self.walk_2, self.walk_3]
+        self.spriteListWalk_L = [self.walk_1_L, self.walk_2_L, self.walk_3_L]
+
+        self.bufferTime = 3
+        self.counter = 0
+        self.image = self.walk_1
 
         self.rect = self.image.get_rect()                                                                                           #initialize the position of the sprite
         self.start_axis = random.randrange(1, 3)                                                                                    #determine which axis to spawn human
