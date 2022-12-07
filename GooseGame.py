@@ -121,8 +121,8 @@ class Goose(pygame.sprite.Sprite):                                              
 
         #goose position
         self.rect = self.image.get_rect()                                                                                               #initialize the position of the sprite
-        self.rect.x = 715                                                                                                               #set variable of x position, with value of 725
-        self.rect.y = 405                                                                                                               #set variable of x position, with value of 425
+        self.rect.x = 715                                                                                                               #set variable of x position, with value of 715
+        self.rect.y = 405                                                                                                               #set variable of x position, with value of 405
 
         #other variables
         self.score = 0                                                                                                                  #set variable of goose's score, with value of 0 at start of game
@@ -309,8 +309,8 @@ class Nest(pygame.sprite.Sprite):                                           #cla
 
         #nest position
         self.rect = self.image.get_rect()                                           #initialize the position of the sprite
-        self.rect.x = 690                                                           #set variable of x position, with value of 725         
-        self.rect.y = 440                                                           #set variable of x position, with value of 475
+        self.rect.x = 690                                                           #set variable of x position, with value of 690        
+        self.rect.y = 440                                                           #set variable of x position, with value of 440
  
     def update(self):                                                           #define function for when sprite updates itself in-game
         pass                                                                        #do nothing
@@ -342,7 +342,7 @@ def main_menu(current_level, music):                                            
 
         #text
         title = title_font.render("The Goose Training Camp", True, black)                   #create text for the title, colour is black
-        title_rect = title.get_rect(center = (750, 400))                                    #determine position of the title, center it on (750, 100)
+        title_rect = title.get_rect(center = (750, 400))                                    #determine position of the title, center it on (750, 400)
         screen.blit(title, title_rect)                                                      #add the title to the screen
 
         #updating buttons
@@ -398,7 +398,7 @@ def instructions(current_level):                                                
 
         #text
         text = title_font.render("How to Play", True, black)                                #create text for the title of the screen, set colour to black
-        text_rect = text.get_rect(center = (750, 250))                                      #get position of the title, center on (750, 100)
+        text_rect = text.get_rect(center = (750, 250))                                      #get position of the title, center on (750, 250)
         screen.blit(text, text_rect)                                                        #add text to the screen
 
         t_pos = 340                                                                         #set position of the text as 340
@@ -715,7 +715,7 @@ def you_lose(current_level, humans_left, time_left):                            
 
         #text        
         text = title_font.render("Game Over", True, black)                                          #create text for the title of the screen, colour is black
-        text_rect = text.get_rect(center = (750, 360))                                              #get position of the text, center on (750, 100)
+        text_rect = text.get_rect(center = (750, 360))                                              #get position of the text, center on (750, 360)
         screen.blit(text, text_rect)                                                                #add text to the screen
 
         t_pos = 440                                                                                 #initialize position of text
@@ -724,7 +724,7 @@ def you_lose(current_level, humans_left, time_left):                            
             text_rect = text.get_rect(center = (750, t_pos))                                            #get position of text, centered vertically and corresponding the position value
             screen.blit(text, text_rect)                                                                #add text to the screen
             
-            t_pos += 40                                                                                 #increase position of next text line by 50
+            t_pos += 40                                                                                 #increase position of next text line by 40
 
         #updating buttons
         mouse_pos = pygame.mouse.get_pos()                                                          #get position of the mouse
@@ -777,7 +777,7 @@ def congrats():                                                                 
         screen.blit(text, text_rect)                                                            #add text to the screen
 
         text = text_font.render("You are now a certified goose", True, black)                   #create text
-        text_rect = text.get_rect(center = (750, 480))                                          #get position of the text, center on (750, 500)
+        text_rect = text.get_rect(center = (750, 480))                                          #get position of the text, center on (750, 480)
         screen.blit(text, text_rect)                                                            #add text on screen
 
         #updating buttons
