@@ -5,9 +5,6 @@ By:
 Karan Sharma 21023433
 Alina XinLin Zhu 20999257
 Ege Cagdas 21020905
-
-Citations:
-
 '''
 
 
