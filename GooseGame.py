@@ -219,8 +219,8 @@ class Human(pygame.sprite.Sprite):                                              
         '''
 
         if self.start_axis == 1:                                                                                                    #check if human starts on x-axis
-            self.rect.x = random.randrange(-50, 1500)                                                                                   #pick a random value on the x-axis to start on
-            self.rect.y = random.choice([-50, 1000])                                                                                    #choose whether to start on top or bottom of screen
+            self.rect.x = random.randrange(-120, 1500)                                                                                  #pick a random value on the x-axis to start on
+            self.rect.y = random.choice([-120, 1000])                                                                                   #choose whether to start on top or bottom of screen
 
             self.x_speed = random.randrange(-3, 4)                                                                                      #set speed on x-axis as random value from -3 to 3
 
@@ -229,8 +229,8 @@ class Human(pygame.sprite.Sprite):                                              
                 self.y_speed = random.randrange(-5, -2)                                                                                     #set speed on y_axis as random value from -5 to -3 (so it moves up)
 
         else:                                                                                                                       #human starts on y_axis
-            self.rect.x = random.choice([-50, 1500])                                                                                    #choose whether to start on left or right of screen
-            self.rect.y = random.randrange(-50, 1000)                                                                                   #pick a random value on the y-axis to start on
+            self.rect.x = random.choice([-120, 1500])                                                                                   #choose whether to start on left or right of screen
+            self.rect.y = random.randrange(-120, 1000)                                                                                  #pick a random value on the y-axis to start on
 
             self.x_speed = random.randrange(3, 6)                                                                                       #if on the left, set speed on x-axis as random value from 3 to 5 (so it moves right)
             if self.rect.x == 1500:                                                                                                     #check if on the right
